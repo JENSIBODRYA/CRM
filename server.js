@@ -4,7 +4,10 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const accountRoutes = require('./routes/accountRoutes');
-var cors = require('cors')
+const branchRoutes = require('./routes/branchRoutes');
+
+var cors = require('cors');
+const branchController = require('./controllers/BranchController');
 
 const app = express();
 app.use(cors())
@@ -22,6 +25,7 @@ app.use(bodyParser.json());
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/account', accountRoutes);
+app.use('/branch', branchRoutes);
 
 // Start the server
 app.listen(PORT, () => {

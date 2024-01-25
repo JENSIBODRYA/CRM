@@ -38,14 +38,16 @@ const isAdmin = (req, res, next) => {
 router.post('/addExpense', accountController.addExpense);
 router.delete('/deleteExpense/:id',  accountController.deleteExpense);
 router.put('/updateExpense/:id',  accountController.updateExpense);
-router.get('/viewExpense',  accountController.getExpense);
+router.get('/viewExpense',  accountController.getAllExpense);
+router.get('/viewExpense/:branchId',  accountController.getExpense);
 router.get('/getExpense/:id', accountController.getoneExpense);
 router.get('/totalExpense',  accountController.totalExpense);
 
 router.post('/addIncome',  accountController.addIncome);
 router.delete('/deleteIncome/:id',  accountController.deleteIncome);
 router.put('/updateIncome/:id',  accountController.updateIncome);
-router.get('/viewIncome',  accountController.getIncome);
+router.get('/viewIncome',  accountController.getAllIncome);
+router.get('/viewIncome/:branchId',  accountController.getIncome);
 router.get('/getIncome/:id', accountController.getoneIncome);
 router.get('/totalIncome',  accountController.totalIncome)
 
