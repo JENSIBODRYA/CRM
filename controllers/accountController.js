@@ -9,7 +9,8 @@ module.exports.getIncome = async (req, res) => {
         const { branchId } = req.params;
         console.log(branchId);
 
-        const { page = 1, limit = 10, search } = req.query; 
+        const { page=1, limit=10, search } = req.query;
+        // console.log(search, "i am the value of search");
 
         const options = {
             page: parseInt(page),
@@ -18,18 +19,21 @@ module.exports.getIncome = async (req, res) => {
 
         const query = { branchId: branchId };
 
-        if (search) {
-          const isNumeric = !isNaN(search);
-    
-          if (isNumeric) {
-            query.amount = parseInt(search);
-          } else {
-            query.$or = [
-              { title: { $regex: new RegExp(search, 'i') } },
-              { description: { $regex: new RegExp(search, 'i') } },
-            ];
-          }
+        if (search !== undefined && search !== null) {
+            const isNumeric = !isNaN(search);
+
+            if (isNumeric) {
+                // console.log("Yes, I am a number");
+                query.amount = parseInt(search);
+            } else {
+                // console.log("No, I am not a number");
+                query.$or = [
+                    { title: { $regex: new RegExp(search, 'i') } },
+                    { description: { $regex: new RegExp(search, 'i') } },
+                ];
+            }
         }
+
         const incomes = await Income.paginate(query, options);
         res.status(200).json(incomes);
     } catch (error) {
@@ -37,6 +41,7 @@ module.exports.getIncome = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 module.exports.getAllIncome = async (req, res) => {
     const income = await Income.find({}, { __v: 0 });
@@ -160,7 +165,7 @@ module.exports.updateExpense = async (req, res) => {
     const { id } = req.params
     const { date, title, description, amount, lastEdit } = req.body;
 
-    Expense.findByIdAndUpdate(id, { date, title, description, amount,lastEdit }, { new: true })
+    Expense.findByIdAndUpdate(id, { date, title, description, amount, lastEdit }, { new: true })
         .then((data) => {
             console.log("Update successfully");
             res.status(201).send({ data, user });
